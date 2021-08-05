@@ -1,4 +1,4 @@
-const template = (
+export const render = (
     markup: string,
     title: string = 'dude'
 ) => `

@@ -7,7 +7,7 @@ import {
     convertDirectoryTreeToObject,
     getFileType,
     getFileName,
-} from '../readFiles.ts'
+} from '../src/waffleiron.ts'
 
 Deno.test("can read file", async () => {
     const file = await readFile('./tests/data/test.md')
