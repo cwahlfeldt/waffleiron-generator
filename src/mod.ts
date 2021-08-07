@@ -1,10 +1,13 @@
 import {
+    createDirBuildPaths,
+    createFileBuildPaths,
     createDirectories,
     createFiles,
-    createFileStructure
 } from "./waffleiron.ts";
 
-const {buildDirectories, filePaths} = await createFileStructure('/Users/waffles/Library/Mobile Documents/iCloud~md~obsidian/Documents/Website')
+const path = '/Users/waffles/Library/Mobile Documents/iCloud~md~obsidian/Documents/Website'
+const dirBuildPaths = await createDirBuildPaths(path)
+const fileBuildPaths = await createFileBuildPaths(path)
 
-await createDirectories(buildDirectories).then(r => console.log(r))
-await createFiles(filePaths).then(r => console.log(r))
+await createDirectories(dirBuildPaths).then(r => console.log('all directories built'))
+await createFiles(fileBuildPaths).then(r => console.log('all files built :)'))

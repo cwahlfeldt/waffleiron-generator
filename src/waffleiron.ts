@@ -2,28 +2,30 @@ import { Marked } from 'https://deno.land/x/markdown@v2.0.0/mod.ts'
 import { renderMarkup } from "./templates/render.ts";
 import { changeMarkdownExtensionToHTML, walkDirectory } from "./utilities.ts";
 
-export const createFileStructure = async (dirName: string) => {
+export const createDirBuildPaths = async (dirName: string) => {
     let directoryArray: string[] = []
-    let pathsArray: { source: string; out: string; }[] = []
-
-    await walkDirectory(dirName, (entry) => {
+    await walkDirectory(dirName, async (entry) => {
         const newPath = './build' + changeMarkdownExtensionToHTML(entry.path.split(dirName).pop() ?? '').toLowerCase()
         if (entry.isDirectory) {
             directoryArray.push(newPath)
-        } else {
+        }
+    })
+    directoryArray.shift() // first entry is always the . path, so remove that ish
+    return directoryArray
+}
+
+export const createFileBuildPaths = async (dirName: string) => {
+    let pathsArray: { source: string; out: string; }[] = []
+    await walkDirectory(dirName, (entry) => {
+        const newPath = './build' + changeMarkdownExtensionToHTML(entry.path.split(dirName).pop() ?? '').toLowerCase()
+        if (entry.isFile) {
             pathsArray.push({
                 source: entry.path,
                 out: newPath,
             })
         }
     })
-
-    directoryArray.shift() // first entry is always the . path, so remove that ish
-
-    return {
-        buildDirectories: directoryArray,
-        filePaths: pathsArray,
-    }
+    return pathsArray
 }
 
 export const createDirectories = async (directoryPaths: any) => {
