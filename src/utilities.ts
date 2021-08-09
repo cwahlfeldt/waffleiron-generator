@@ -14,6 +14,7 @@ export const walkDirectory = async (dirName: string, callback: (arg0: WalkEntry)
             /.DS_Store/,
             /\/.obsidian/
         ]
+
     })) {
         callback(entry)
     }

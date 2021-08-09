@@ -28,9 +28,9 @@ export const createFileBuildPaths = async (dirName: string) => {
     return pathsArray
 }
 
-export const createDirectories = async (directoryPaths: any) => {
-    await Deno.remove('build', { recursive: true })
-    await Deno.mkdir('build')
+export const createDirectories = async (directoryPaths: any, outPath: string = 'build') => {
+    await Deno.remove(outPath, { recursive: true })
+    await Deno.mkdir(outPath)
     for (let i = 0; i < directoryPaths.length; i++) {
         await Deno.mkdir(directoryPaths[i])
     }
@@ -38,7 +38,8 @@ export const createDirectories = async (directoryPaths: any) => {
 
 export const createFiles = async (filePaths: any) => {
     for (let i = 0; i < filePaths.length; i++) {
-        const markup = Marked.parse(Deno.readTextFileSync(filePaths[i].source)).content
+        const markdown = Deno.readTextFileSync(filePaths[i].source)
+        const markup = Marked.parse(markdown).content
         Deno.writeTextFileSync(filePaths[i].out, renderMarkup(markup))
     }
 }
